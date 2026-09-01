@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "943647799081",
+    "project_id": "dkn-human-authority",
+    "storage_bucket": "dkn-human-authority.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943647799081:android:bc41e6f7ed1e8425bc6938",
+        "android_client_info": {
+          "package_name": "com.dkn.humanauthority"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiD2Qw1dxUyvPOGYANFLtbMz_-gZbPNFo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

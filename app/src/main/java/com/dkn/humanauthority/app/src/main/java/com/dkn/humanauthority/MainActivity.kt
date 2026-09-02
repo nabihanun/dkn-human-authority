@@ -98,7 +98,7 @@ fun DknApp() {
                     title = {
                         Column {
                             Text(
-                                "দক্ষিণ কেরানীগঞ্জ",
+                                "দক্ষিণ কেবলনগর",
                                 fontWeight = FontWeight.Bold
                             )
                             Text(

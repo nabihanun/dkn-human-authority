@@ -3,78 +3,166 @@ package com.dkn.humanauthority
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Event
+import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-data class Notice(val title:String, val body:String)
-data class Event(val title:String, val date:String, val place:String)
+data class Notice(
+    val title: String,
+    val body: String
+)
+
+data class Event(
+    val title: String,
+    val date: String,
+    val place: String
+)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { DknApp() }
+
+        setContent {
+            DknApp()
+        }
     }
 }
 
 @Composable
 fun DknApp() {
+
     var tab by remember { mutableIntStateOf(0) }
+
     val notices = listOf(
-        Notice("স্বাগতম", "দক্ষিণ কেবল নগর হিউম্যান অথরিটির অফিসিয়াল Android অ্যাপে আপনাকে স্বাগতম।"),
-        Notice("মাদকবিরোধী সচেতনতা", "মাদকমুক্ত সমাজ গঠনে সবাইকে সচেতন হওয়ার আহ্বান।")
+        Notice(
+            "সতর্কতা",
+            "দক্ষিণ কেবল নগর এলাকার গুরুত্বপূর্ণ তথ্য ও নোটিশ এখানে প্রকাশ করা হবে।"
+        ),
+        Notice(
+            "সামাজিক সচেতনতা",
+            "নিরাপদ ও সুন্দর সমাজ গঠনে সবাইকে সচেতন হওয়ার আহ্বান।"
+        ),
+        Notice(
+            "জরুরি ঘোষণা",
+            "প্রয়োজনীয় সরকারি ও স্থানীয় ঘোষণা এই অংশে প্রকাশ করা হবে।"
+        )
     )
+
     val events = listOf(
-        Event("সামাজিক সচেতনতা কর্মসূচি", "তারিখ অ্যাডমিন দ্বারা নির্ধারিত হবে", "দক্ষিণ কেবল নগর, ৮নং ওয়ার্ড"),
-        Event("উঠান বৈঠক", "তারিখ অ্যাডমিন দ্বারা নির্ধারিত হবে", "দক্ষিণ কেবল নগর")
+        Event(
+            "সামাজিক সচেতনতা কর্মসূচি",
+            "তারিখ: আগামী শুক্রবার",
+            "স্থান: কডার বাজার"
+        ),
+        Event(
+            "উঠান বৈঠক",
+            "তারিখ: আগামী শনিবার",
+            "স্থান: দক্ষিণ কেবল নগর"
+        )
     )
 
     MaterialTheme {
+
         Scaffold(
+
             topBar = {
                 TopAppBar(
                     title = {
                         Column {
-                            Text("দক্ষিণ কেবল নগর", fontWeight = FontWeight.Bold)
-                            Text("হিউম্যান অথরিটি", fontSize = 12.sp)
+                            Text(
+                                "দক্ষিণ কেরানীগঞ্জ",
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                "হিউম্যান অথরিটি",
+                                fontSize = 12.sp
+                            )
                         }
                     }
                 )
             },
+
             bottomBar = {
+
                 NavigationBar {
-                    listOf(
+
+                    val items = listOf(
                         "হোম" to Icons.Default.Home,
                         "কার্যক্রম" to Icons.Default.Event,
                         "সদস্য" to Icons.Default.Group,
                         "অনুদান" to Icons.Default.AccountBalanceWallet,
                         "যোগাযোগ" to Icons.Default.Call
-                    ).forEachIndexed { i, item ->
+                    )
+
+                    items.forEachIndexed { index, item ->
+
                         NavigationBarItem(
-                            selected = tab == i,
-                            onClick = { tab = i },
-                            icon = { Icon(item.second, null) },
-                            label = { Text(item.first) }
+                            selected = tab == index,
+                            onClick = {
+                                tab = index
+                            },
+                            icon = {
+                                androidx.compose.material3.Icon(
+                                    imageVector = item.second,
+                                    contentDescription = item.first
+                                )
+                            },
+                            label = {
+                                Text(item.first)
+                            }
                         )
                     }
                 }
             }
-        ) { pad ->
-            when(tab) {
-                0 -> HomeScreen(notices)
-                1 -> EventsScreen(events)
-                2 -> MemberScreen()
-                3 -> DonationScreen()
-                else -> ContactScreen()
+
+        ) { padding ->
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+            ) {
+
+                when (tab) {
+
+                    0 -> HomeScreen(notices)
+
+                    1 -> EventsScreen(events)
+
+                    2 -> MemberScreen()
+
+                    3 -> DonationScreen()
+
+                    4 -> ContactScreen()
+                }
             }
         }
     }
@@ -82,26 +170,41 @@ fun DknApp() {
 
 @Composable
 fun HomeScreen(notices: List<Notice>) {
+
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+
         item {
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Column(Modifier.padding(20.dp)) {
-                    Text("মানবতার সেবায়, সমাজের উন্নতি", fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                    Spacer(Modifier.height(8.dp))
-                    Text("সামাজিক উন্নয়ন, মাদকমুক্ত সমাজ, পরিবেশ সংরক্ষণ ও জনসচেতনতার মাধ্যমে সুন্দর সমাজ গড়াই আমাদের অঙ্গীকার।")
-                }
-            }
+            Text(
+                "সর্বশেষ নোটিশ",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
-        item { Text("সাম্প্রতিক নোটিশ", fontSize = 20.sp, fontWeight = FontWeight.Bold) }
-        items(notices) { n ->
-            Card {
-                Column(Modifier.padding(16.dp)) {
-                    Text(n.title, fontWeight = FontWeight.Bold)
-                    Spacer(Modifier.height(5.dp))
-                    Text(n.body)
+
+        items(notices) { notice ->
+
+            Card(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+
+                    Text(
+                        notice.title,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Text(
+                        notice.body,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
                 }
             }
         }
@@ -110,14 +213,47 @@ fun HomeScreen(notices: List<Notice>) {
 
 @Composable
 fun EventsScreen(events: List<Event>) {
-    LazyColumn(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        item { Text("কর্মসূচি ও ইভেন্ট", fontSize = 22.sp, fontWeight = FontWeight.Bold) }
-        items(events) { e ->
-            Card {
-                Column(Modifier.padding(16.dp)) {
-                    Text(e.title, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                    Text("📅 ${e.date}")
-                    Text("📍 ${e.place}")
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+
+        item {
+            Text(
+                "কার্যক্রম ও অনুষ্ঠান",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        items(events) { event ->
+
+            Card(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+
+                    Text(
+                        event.title,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Text(
+                        "📅 ${event.date}",
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+
+                    Text(
+                        "📍 ${event.place}",
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
                 }
             }
         }
@@ -126,50 +262,149 @@ fun EventsScreen(events: List<Event>) {
 
 @Composable
 fun MemberScreen() {
-    var name by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
-    var sent by remember { mutableStateOf(false) }
-    LazyColumn(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        item {
-            Text("সদস্য হওয়ার আবেদন", fontSize = 22.sp, fontWeight = FontWeight.Bold)
-            OutlinedTextField(name, { name = it }, label = { Text("পূর্ণ নাম") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(phone, { phone = it }, label = { Text("মোবাইল নম্বর") }, modifier = Modifier.fillMaxWidth())
-            Button(
-                onClick = { sent = true },
-                enabled = name.isNotBlank() && phone.isNotBlank(),
-                modifier = Modifier.fillMaxWidth()
-            ) { Text("আবেদন জমা দিন") }
-            if (sent) Text("আপনার আবেদন গ্রহণের জন্য প্রস্তুত হয়েছে। অনলাইন ডাটাবেস যুক্ত করলে এটি সরাসরি অ্যাডমিনের কাছে যাবে।")
+
+    var name by remember {
+        mutableStateOf("")
+    }
+
+    var phone by remember {
+        mutableStateOf("")
+    }
+
+    var sent by remember {
+        mutableStateOf(false)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+
+        Text(
+            "সদস্য আবেদন",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Text(
+            "সদস্য হওয়ার জন্য নিচের তথ্য দিন।"
+        )
+
+        TextField(
+            value = name,
+            onValueChange = {
+                name = it
+            },
+            label = {
+                Text("নাম")
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        TextField(
+            value = phone,
+            onValueChange = {
+                phone = it
+            },
+            label = {
+                Text("মোবাইল নম্বর")
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        androidx.compose.material3.Button(
+            onClick = {
+                sent = name.isNotBlank() && phone.isNotBlank()
+            },
+            enabled = name.isNotBlank() && phone.isNotBlank(),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("আবেদন পাঠান")
+        }
+
+        if (sent) {
+
+            Text(
+                "আপনার আবেদন গ্রহণের জন্য প্রস্তুত। পরবর্তী ধাপে Firebase-এর মাধ্যমে এটি সংরক্ষণ করা হবে।"
+            )
         }
     }
 }
 
 @Composable
 fun DonationScreen() {
-    LazyColumn(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        item {
-            Text("অনুদান", fontSize = 22.sp, fontWeight = FontWeight.Bold)
-            Text("সংগঠনের সামাজিক কার্যক্রমে সহযোগিতা করুন।")
-            Spacer(Modifier.height(12.dp))
-            Card {
-                Column(Modifier.padding(16.dp)) {
-                    Text("বিকাশ / নগদ / ব্যাংক", fontWeight = FontWeight.Bold)
-                    Text("পেমেন্ট নম্বর ও ব্যাংক তথ্য অ্যাডমিন সেট করবেন।")
-                }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+
+        Text(
+            "অনুদান",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Text(
+            "সংগঠনের সামাজিক কার্যক্রম পরিচালনায় আপনার সহযোগিতা গুরুত্বপূর্ণ।"
+        )
+
+        Card(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+
+                Text(
+                    "বিকাশ / নগদ / ব্যাংক",
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    "পরবর্তী ধাপে নিরাপদ পেমেন্ট ব্যবস্থা যুক্ত করা হবে।",
+                    modifier = Modifier.padding(top = 8.dp)
+                )
             }
-            Spacer(Modifier.height(12.dp))
-            Text("আয়-ব্যয়ের হিসাব", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Text("অনলাইন ডাটাবেস যুক্ত হলে এখানে রিয়েল-টাইম হিসাব দেখানো হবে।")
         }
     }
 }
 
 @Composable
 fun ContactScreen() {
-    Column(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text("যোগাযোগ", fontSize = 22.sp, fontWeight = FontWeight.Bold)
-        Text("দক্ষিণ কেবল নগর হিউম্যান অথরিটি")
-        Text("দক্ষিণ কেবল নগর, ৮নং ওয়ার্ড")
-        Text("ফোন, Facebook ও অন্যান্য যোগাযোগের তথ্য অ্যাডমিন যুক্ত করবেন।")
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+
+        Text(
+            "যোগাযোগ",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Text(
+            "দক্ষিণ কেবল নগর  হিউম্যান অথরিটি"
+        )
+
+        Text(
+            "ফোন: যোগাযোগ নম্বর এখানে যুক্ত হবে"
+        )
+
+        Text(
+            "ঠিকানা: দক্ষিণ কেবল নগর "
+        )
+
+        Text(
+            "Facebook ও অন্যান্য যোগাযোগ মাধ্যম পরবর্তী ধাপে যুক্ত করা হবে।"
+        )
     }
 }

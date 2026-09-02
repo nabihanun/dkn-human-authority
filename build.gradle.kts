@@ -4,7 +4,9 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.21"
 }
 
-android {
+android { sourceSets["main"].manifest.srcFile("app/src/main/AndroidManifest.xml")
+sourceSets["main"].java.srcDirs("app/src/main/java")
+sourceSets["main"].res.srcDirs("app/src/main/res")
     namespace = "com.dkn.humanauthority"
     compileSdk = 35
 
@@ -25,3 +27,4 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.5")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
 }
+ 

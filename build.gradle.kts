@@ -9,7 +9,14 @@ sourceSets["main"].java.srcDirs("app/src/main/java")
 sourceSets["main"].res.srcDirs("app/src/main/res")
     namespace = "com.dkn.humanauthority"
     compileSdk = 35
+compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
+kotlinOptions {
+    jvmTarget = "17"
+}
     defaultConfig {
         applicationId = "com.dkn.humanauthority"
         minSdk = 24

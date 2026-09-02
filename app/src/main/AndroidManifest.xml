@@ -4,7 +4,7 @@
 
     <application
         android:theme="@style/Theme.DKN"
-        android:label="দক্ষিণ কেরান নগর হিউম্যান অথরিটি"
+        android:label="দক্ষিণ কেবল নগর হিউম্যান অথরিটি"
         android:allowBackup="true"
         android:supportsRtl="true">
 
